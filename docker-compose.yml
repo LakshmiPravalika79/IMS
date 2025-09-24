@@ -8,7 +8,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pElp@2025"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -23,15 +23,15 @@ services:
       db:
         condition: service_healthy
     environment:
-      SERVER_PORT: 8081
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/inventory_db
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/inventory_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Elp@2025
       # Optional JPA hints:
       # SPRING_JPA_HIBERNATE_DDL_AUTO: update
       # SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
     ports:
-      - "5050:8081"           # backend reachable at http://localhost:5050
+      - "5050:5050"           # backend reachable at http://localhost:5050
     restart: unless-stopped
 
   frontend:
