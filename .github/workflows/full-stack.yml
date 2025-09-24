@@ -9,6 +9,8 @@ on:
 jobs:
   frontend:
     runs-on: ubuntu-latest
+    env:
+      CI: true
     defaults:
       run:
         working-directory: ./frontend
@@ -26,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test -- --coverage --watchAll=false --passWithNoTests
+        run: npm test -- --watchAll=false --passWithNoTests
 
       - name: Build application
         run: npm run build
@@ -47,11 +49,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Cache Maven dependencies
         uses: actions/cache@v3
