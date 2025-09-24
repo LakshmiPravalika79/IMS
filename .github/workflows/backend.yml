@@ -35,11 +35,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Run tests
-        run: mvn test
+      - name: Build and test application
+        run: mvn clean test -Dspring.profiles.active=test
 
-      - name: Build application
-        run: mvn clean package -DskipTests
+      - name: Package application
+        run: mvn package -DskipTests
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4

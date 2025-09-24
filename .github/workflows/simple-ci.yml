@@ -47,4 +47,4 @@ jobs:
       - name: Build application
         run: |
           cd backend
-          mvn clean compile -DskipTests
+          mvn clean compile -DskipTests -Dspring.profiles.active=test
