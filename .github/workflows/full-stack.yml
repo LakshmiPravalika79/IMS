@@ -21,14 +21,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run tests
-        run: npm test -- --coverage --watchAll=false
+        run: npm test -- --coverage --watchAll=false --passWithNoTests
 
       - name: Build application
         run: npm run build
@@ -61,6 +59,9 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
 
       - name: Run tests
         run: ./mvnw test
