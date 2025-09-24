@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: inventory-db
+    environment:
+      MYSQL_ROOT_PASSWORD: Elp@2025
+      MYSQL_DATABASE: inventory_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    # If you need host access for Workbench/DBeaver, uncomment:
+    # ports:
+    #   - "3307:3306"          # host:container
+
+  backend:
+    build: ./backend
+    container_name: backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/inventory_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Elp@2025
+      # Optional JPA hints:
+      # SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      # SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+    ports:
+      - "5050:8081"           # backend reachable at http://localhost:5050
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"             # frontend at http://localhost:3000
+    restart: unless-stopped
+    # If your nginx.conf proxies /api to the backend, it will reach service name "backend" on port 8081
+
+volumes:
+  mysql_data: {}
