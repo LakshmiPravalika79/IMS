@@ -28,6 +28,13 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Skip authentication for auth endpoints
+        String path = request.getRequestURI();
+        if (path.startsWith("/api/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = getTokenFromRequest(request);
         if (token != null) {
             String email = jwtUtils.getUsernameFromToken(token);

@@ -7,6 +7,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [role, setRole] = useState("MANAGER"); // Default to MANAGER
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const registerData = { name, email, password, phoneNumber };
+      const registerData = { name, email, password, phoneNumber, role };
       await ApiService.registerUser(registerData);
       setMessage("Registration Successfull");
       navigate("/login");
@@ -71,6 +72,15 @@ const RegisterPage = () => {
           onChange={(e) => setPhoneNumber(e.target.value)}
           required
         />
+
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          required
+        >
+          <option value="MANAGER">Manager</option>
+          <option value="ADMIN">Admin</option>
+        </select>
 
         <button type="submit">Register</button>
       </form>

@@ -29,4 +29,9 @@ public class AuthController {
         return ResponseEntity.ok(userService.loginUser(loginRequest));
     }
 
+    @PostMapping("/test")
+    public ResponseEntity<String> testAuth() {
+        return ResponseEntity.ok("Authentication bypass working!");
+    }
+
 }
